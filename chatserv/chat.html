@@ -6,29 +6,33 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: 'Vazirmatn', sans-serif; }
-    .msg { animation: fadeIn .3s ease; }
+    .msg { animation: fadeIn .25s ease; }
     @keyframes fadeIn { 0% { opacity: 0; transform: translateY(6px);} 100% { opacity:1; transform:translateY(0);} }
   </style>
 </head>
-<body class="bg-white h-screen flex flex-col">
+<body class="bg-gray-100 h-screen flex flex-col">
 
-  <!-- هدر ثابت بالا -->
-  <header class="bg-gradient-to-r from-sky-500 to-blue-600 text-white p-3 flex justify-between items-center shadow-md">
+  <!-- هدر -->
+  <header class="bg-gradient-to-r from-sky-500 to-blue-600 text-white p-4 flex justify-between items-center shadow-md">
     <div>
-      <h1 class="text-lg font-bold">کلینیک آرامش</h1>
-      <p class="text-xs text-blue-100">گفتگوی آنلاین</p>
+      <h1 class="text-xl font-bold">کلینیک آرامش</h1>
+      <p class="text-sm text-blue-100">چت با روان‌شناس</p>
     </div>
-    <button id="clearHistoryBtn" class="bg-gray-800/70 hover:bg-gray-900/80 text-xs px-3 py-1 rounded-lg">پاک‌کردن</button>
+    <button id="clearHistoryBtn" class="bg-gray-900/70 hover:bg-gray-900 text-sm px-4 py-2 rounded-xl">پاک کردن</button>
   </header>
 
-  <!-- بخش چت -->
-  <main id="chat" class="flex-1 overflow-y-auto p-3 space-y-2 bg-gray-50"></main>
+  <!-- بخش پیام‌ها -->
+  <main id="chat" class="flex-1 overflow-y-auto p-4 space-y-4">
+    <!-- پیام‌ها اینجا اضافه می‌شن -->
+  </main>
 
-  <!-- ورودی ثابت پایین -->
-  <footer class="p-2 bg-white border-t border-gray-200 flex items-center gap-2">
+  <!-- ورودی -->
+  <footer class="p-3 bg-white border-t border-gray-300 flex items-center gap-2">
     <textarea id="inputMessage" rows="1" placeholder="پیام خود را بنویسید..."
-      class="flex-grow text-sm p-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none overflow-y-hidden"></textarea>
-    <button id="sendBtn" class="bg-teal-600 text-white px-4 py-2 rounded-xl shadow hover:bg-teal-700">ارسال</button>
+      class="flex-grow text-base p-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none overflow-y-hidden"></textarea>
+    <button id="sendBtn" class="bg-teal-600 text-white px-6 py-3 rounded-2xl text-base font-medium shadow-md hover:bg-teal-700">
+      ارسال
+    </button>
   </footer>
 
   <script>
@@ -48,10 +52,10 @@
       const wrapper = document.createElement('div');
       wrapper.classList.add('flex', 'w-full');
       const div = document.createElement('div');
-      div.classList.add('msg','p-3','rounded-2xl','max-w-[80%]','whitespace-pre-wrap','break-words','leading-relaxed','text-sm');
+      div.classList.add('msg','p-4','rounded-3xl','max-w-[85%]','whitespace-pre-wrap','break-words','leading-relaxed','text-lg');
       if (sender === 'user') {
         wrapper.classList.add('justify-start');
-        div.classList.add('bg-teal-500','text-white');
+        div.classList.add('bg-teal-600','text-white');
       } else {
         wrapper.classList.add('justify-end');
         div.classList.add('bg-blue-100','text-gray-900');
@@ -66,10 +70,10 @@
       const wrapper = document.createElement('div');
       wrapper.classList.add('flex','w-full');
       const div = document.createElement('div');
-      div.classList.add('msg','p-3','rounded-2xl','max-w-[80%]','whitespace-pre-wrap','break-words','leading-relaxed','text-sm');
+      div.classList.add('msg','p-4','rounded-3xl','max-w-[85%]','whitespace-pre-wrap','break-words','leading-relaxed','text-lg');
       if (sender === 'user') {
         wrapper.classList.add('justify-start');
-        div.classList.add('bg-teal-500','text-white');
+        div.classList.add('bg-teal-600','text-white');
       } else {
         wrapper.classList.add('justify-end');
         div.classList.add('bg-blue-100','text-gray-900');
