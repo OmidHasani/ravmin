@@ -264,6 +264,15 @@ ${historyText}
         addMessage("خطا در ارتباط با سرور", 'assistant');
       }
     }
+function adjustInputHeight() {
+  inputMessage.style.height = 'auto';
+  inputMessage.style.height = inputMessage.scrollHeight + 'px';
+}
+
+window.addEventListener('load', () => {
+  adjustInputHeight();
+  chat.scrollTop = chat.scrollHeight;
+});
 
     sendBtn.addEventListener('click', sendMessage);
 
@@ -290,4 +299,5 @@ ${historyText}
   </script>
 </body>
 </html>
+
 
