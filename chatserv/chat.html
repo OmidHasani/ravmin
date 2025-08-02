@@ -25,32 +25,38 @@
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 via-sky-50 to-blue-100 min-h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-gradient-to-br from-blue-50 via-sky-50 to-blue-100 min-h-screen flex flex-col items-center justify-center p-2">
 
-  <div class="bg-white shadow-xl rounded-3xl w-full max-w-3xl flex flex-col h-[85vh] border border-blue-100 overflow-hidden">
+  <div class="bg-white shadow-xl rounded-2xl w-full max-w-full sm:max-w-3xl flex flex-col h-screen sm:h-[85vh] border border-blue-100 overflow-hidden">
 
-    <div class="bg-gradient-to-r from-sky-400 to-blue-600 text-white flex justify-between items-center p-5 shadow">
+    <!-- هدر -->
+    <div class="bg-gradient-to-r from-sky-400 to-blue-600 text-white flex justify-between items-center p-4 sm:p-5 shadow">
       <div>
-        <h1 class="text-xl font-bold">کلینیک آرامش</h1>
-        <p class="text-sm text-blue-100">چت آنلاین با روان‌شناس</p>
+        <h1 class="text-lg sm:text-xl font-bold">کلینیک آرامش</h1>
+        <p class="text-xs sm:text-sm text-blue-100">چت آنلاین با روان‌شناس</p>
       </div>
       <div>
-        <button id="clearHistoryBtn" class="bg-gray-800/80 hover:bg-gray-900/90 px-3 py-1 rounded-xl text-sm shadow">پاک کردن تاریخچه</button>
+        <button id="clearHistoryBtn" class="bg-gray-800/80 hover:bg-gray-900/90 px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm shadow">
+          پاک کردن
+        </button>
       </div>
     </div>
 
-    <div id="chat" class="flex-1 overflow-y-auto p-6 space-y-3 bg-gradient-to-b from-blue-50 to-sky-50"></div>
+    <!-- بخش چت -->
+    <div id="chat" class="flex-1 overflow-y-auto p-3 sm:p-6 space-y-3 bg-gradient-to-b from-blue-50 to-sky-50"></div>
 
-    <div class="p-4 border-t border-gray-300 flex items-end flex-row-reverse space-x-2 bg-white rounded-b-2xl">
+    <!-- بخش ورودی -->
+    <div class="p-2 sm:p-4 border-t border-gray-300 flex items-end flex-row-reverse gap-2 bg-white rounded-b-2xl">
       <textarea id="inputMessage" rows="1" placeholder="پیام خود را بنویسید..." 
-        class="flex-grow min-h-[44px] max-h-[150px] p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-800 resize-none overflow-y-hidden transition-all duration-150"></textarea>
+        class="flex-grow min-h-[44px] max-h-[150px] p-2 sm:p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-800 text-sm sm:text-base resize-none overflow-y-hidden transition-all duration-150"></textarea>
       <button id="sendBtn" 
-        class="bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 transition shadow-md">
+        class="bg-teal-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:bg-teal-700 transition shadow-md text-sm sm:text-base">
         ارسال
       </button>
     </div>
 
   </div>
+
 
   <script>
     const memoryLimit = 10;
@@ -259,3 +265,4 @@ ${historyText}
   </script>
 </body>
 </html>
+
