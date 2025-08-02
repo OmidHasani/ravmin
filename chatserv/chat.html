@@ -2,16 +2,26 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <!-- اضافه کردن viewport-fit=cover برای موبایل -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title>چت با روان‌شناس</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
+    /* تنظیم کامل ارتفاع و استفاده از safe area برای موبایل */
+    body, html {
+      margin: 0; padding: 0;
+      height: 100vh;
+      min-height: 100vh;
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(to bottom right, #e0f2fe, #bae6fd);
-      margin: 0; height: 100vh; display: flex; flex-direction: column;
+      display: flex;
+      flex-direction: column;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      /* اجازه میده محتوا از safe-area استفاده کنه */
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
     }
     #chat {
       flex: 1;
@@ -21,6 +31,8 @@
       flex-direction: column;
       gap: 0.8rem;
       scroll-behavior: smooth;
+      /* جلوگیری از اضافه شدن padding پایین زیاد */
+      margin-bottom: 0;
     }
     .msg-wrapper {
       display: flex;
@@ -86,6 +98,8 @@
       gap: 12px;
       align-items: flex-end;
       flex-shrink: 0;
+      /* اضافه کردن safe-area inset برای پایین موبایل */
+      padding-bottom: calc(env(safe-area-inset-bottom) + 10px);
     }
     textarea#inputMessage {
       flex-grow: 1;
@@ -98,6 +112,7 @@
       line-height: 1.5;
       font-family: 'Vazirmatn', sans-serif;
       outline-offset: 2px;
+      min-height: 44px;
     }
     textarea#inputMessage:focus {
       border-color: #0ea5e9;
@@ -284,14 +299,15 @@ ${historyText}
       chat.innerHTML = "";
     };
 
-    // بارگذاری تاریخچه پیام‌ها
+    // بارگذاری تاریخچه پیام‌ها و تنظیم ارتفاع و اسکرول پایین
     memory.forEach(m => addMessage(m.content, m.role));
-    adjustInputHeight();
+    inputMessage.style.height = 'auto';
+    inputMessage.style.height = inputMessage.scrollHeight + 'px';
     chat.scrollTop = chat.scrollHeight;
 
-    // تنظیم ارتفاع ورودی هنگام لود صفحه و اسکرول به پایین
     window.addEventListener('load', () => {
-      adjustInputHeight();
+      inputMessage.style.height = 'auto';
+      inputMessage.style.height = inputMessage.scrollHeight + 'px';
       chat.scrollTop = chat.scrollHeight;
     });
   </script>
