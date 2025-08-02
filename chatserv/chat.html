@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>چت با هوش مصنوعی</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Vazirmatn', sans-serif; }
+    .msg {
+      animation: fadeIn .4s ease;
+      display: inline-block;
+      max-width: 75%;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    #inputMessage {
+      resize: none;
+      overflow-y: hidden;
+      max-height: 150px;
+      transition: height 0.2s ease;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-sky-50 to-blue-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+  <div class="bg-white shadow-xl rounded-3xl w-full max-w-3xl flex flex-col h-[85vh] border border-blue-100 overflow-hidden">
+
+    <div class="bg-gradient-to-r from-sky-400 to-blue-600 text-white flex justify-between items-center p-5 shadow">
+      <div>
+        <h1 class="text-xl font-bold">کلینیک آرامش</h1>
+        <p class="text-sm text-blue-100">چت آنلاین با روان‌شناس</p>
+      </div>
+      <div>
+        <button id="clearHistoryBtn" class="bg-gray-800/80 hover:bg-gray-900/90 px-3 py-1 rounded-xl text-sm shadow">پاک کردن تاریخچه</button>
+      </div>
+    </div>
+
+    <div id="chat" class="flex-1 overflow-y-auto p-6 space-y-3 bg-gradient-to-b from-blue-50 to-sky-50"></div>
+
+    <div class="p-4 border-t border-gray-300 flex items-end flex-row-reverse space-x-2 bg-white rounded-b-2xl">
+      <textarea id="inputMessage" rows="1" placeholder="پیام خود را بنویسید..." 
+        class="flex-grow min-h-[44px] max-h-[150px] p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-800 resize-none overflow-y-hidden transition-all duration-150"></textarea>
+      <button id="sendBtn" 
+        class="bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 transition shadow-md">
+        ارسال
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const memoryLimit = 10;
+    let memory = JSON.parse(localStorage.getItem("publicMemory")) || [];
+    let autoScroll = true;
+
+    const chat = document.getElementById('chat');
+    const inputMessage = document.getElementById('inputMessage');
+    const sendBtn = document.getElementById('sendBtn');
+
+    chat.addEventListener('scroll', () => {
+      const isAtBottom = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 50;
+      autoScroll = isAtBottom;
+    });
+
+    function addMessage(text, sender) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('flex', 'w-full', 'mb-2');
+
+      const div = document.createElement('div');
+      div.setAttribute('dir', 'rtl');
+      div.style.textAlign = 'right';
+      div.classList.add(
+        'msg',
+        'p-4',
+        'rounded-2xl',
+        'max-w-[80%]',
+        'whitespace-pre-wrap',
+        'break-words',
+        'leading-relaxed',
+        'text-[1rem]'
+      );
+
+      if (sender === 'user') {
+        wrapper.classList.add('justify-start');
+        div.classList.add('bg-teal-500', 'text-white', 'shadow-md');
+      } else {
+        wrapper.classList.add('justify-end');
+        div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900');
+      }
+
+      div.textContent = text;
+      wrapper.appendChild(div);
+      chat.appendChild(wrapper);
+      if (autoScroll) chat.scrollTop = chat.scrollHeight;
+    }
+
+    function addMessageTyping(text, sender) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('flex', 'w-full', 'mb-3');
+
+      const div = document.createElement('div');
+      div.setAttribute('dir', 'rtl');
+      div.style.textAlign = 'right';
+      div.classList.add(
+        'msg',
+        'p-4',
+        'rounded-2xl',
+        'min-w-[80%]',
+        'max-w-[80%]',
+        'whitespace-pre-wrap',
+        'break-words',
+        'leading-relaxed',
+        'text-[1.05rem]',
+        'space-y-3'
+      );
+
+      const span = document.createElement('span');
+      span.style.display = 'inline-block';
+      span.style.direction = 'rtl';
+      span.style.unicodeBidi = 'plaintext';
+      span.style.textAlign = 'right';
+      div.appendChild(span);
+
+      if (sender === 'user') {
+        wrapper.classList.add('justify-start');
+        div.classList.add('bg-teal-500', 'text-white', 'shadow-md');
+      } else {
+        wrapper.classList.add('justify-end');
+        div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900');
+      }
+
+      wrapper.appendChild(div);
+      chat.appendChild(wrapper);
+      chat.scrollTop = chat.scrollHeight;
+
+      const paragraphs = text.split(/[\n\.]+/).filter(p => p.trim() !== "");
+      let i = 0, pIndex = 0;
+      const interval = setInterval(() => {
+        span.textContent += paragraphs[pIndex][i] || "";
+        i++;
+        if (autoScroll) chat.scrollTop = chat.scrollHeight;
+
+        if (i >= paragraphs[pIndex].length) {
+          span.textContent += "\n\n";
+          pIndex++;
+          i = 0;
+          if (pIndex >= paragraphs.length) {
+            clearInterval(interval);
+          }
+        }
+      }, 33);
+    }
+
+    function saveMemory() {
+      localStorage.setItem("publicMemory", JSON.stringify(memory));
+    }
+
+    function buildPrompt(newMessage) {
+      const historyText = memory
+        .map(h => `${h.role === 'user' ? 'کاربر' : 'دستیار'}: ${h.content}`)
+        .join("\n");
+
+      return [
+        {
+          role: "system",
+          content:` تو یک دستیار گفتگوی آنلاین هستی که نقش یک روانشناس غربالگر اولیه را ایفا می‌کنی.  
+هدفت این است که با چند پرسش کوتاه، دقیق و هدفمند (حداکثر ۱۰ سؤال) بفهمی آیا کاربر نیاز دارد با یک روانشناس یا مشاور حرفه‌ای صحبت کند یا خیر.  
+
+قوانین مکالمه:  
+1. گفتگو را دوستانه و همدلانه شروع کن، مثل یک انسان که می‌خواهد حال کاربر را بفهمد.  
+2. پرسش‌ها باید عمیق باشند؛ هم وضعیت فعلی را بپرسند (چه اتفاقی افتاده؟ چه حسی داری؟) و هم چرایی و تأثیر آن را (به نظرت چرا این اتفاق روی تو این‌طور اثر گذاشته؟ چه چیزی باعث می‌شود این موضوع برایت مهم باشد؟).  
+3. سؤالات را طوری طراحی کن که کاربر برای پاسخ دادن شوق داشته باشد و احساس کند واقعاً شنیده می‌شود.  
+4. از پرسش‌های بی‌هدف یا زیاد پشت سر هم اجتناب کن؛ هر سؤال باید ارزشمند باشد و به درک بهتر موقعیت کمک کند.  
+5. هیچ راه‌حل یا توصیه درمانی ارائه نده؛ فقط بشنو و ارزیابی کن.  
+6. در طول گفتگو تحلیل کن که آیا مشکل جدی و تأثیرگذار است یا نه.  
+7. اگر مشکل جدی بود، خیلی دوستانه و با دلیل واضح بگو که صحبت با مشاور می‌تواند کمک بزرگی باشد و او را به مشاوره ترغیب کن. اگر مشکل سطحی بود، نیازی به پیشنهاد مشاوره نیست.  
+8. در پایان مکالمه حتماً یک جمع‌بندی کوتاه و کاملاً طبیعی از چیزی که فهمیدی ارائه بده؛ طوری که انگار داری با یک دوست همدل حرف می‌زنی. 
+از عبارت‌های کلیشه‌ای مثل "پس تو گفتی" یا "این نشون می‌ده" استفاده نکن؛ به‌جای اون خیلی انسانی و روان بگو چه برداشتی از حرف‌های کاربر داشتی..**  
+9. لحن باید انسانی، محترمانه، کوتاه، بدون قضاوت و همدلانه باشد؛ مثل کسی که فقط می‌خواهد بفهمد، نه درمان کند.  
+
+${historyText}  
+متون بالا تاریخچه مکالمه شما و کاربر هستند و فقط در صورت نیاز برای پاسخ به پیام فعلی به آنها رجوع کن.  
+`
+        }
+      ];
+    }
+
+    async function sendMessage() {
+      const message = inputMessage.value.trim();
+      if (!message) return;
+      addMessage(message, 'user');
+
+      // ارسال پیام به سرور برای ذخیره
+      fetch("/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sender: "user", content: message })
+      });
+
+      inputMessage.value = '';
+      inputMessage.style.height = 'auto';
+
+      memory.push({ role: "user", content: message });
+      if (memory.length > memoryLimit * 2) memory.splice(0, 2);
+      saveMemory();
+
+      try {
+        const messages = buildPrompt(message);
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages })
+        });
+
+        const data = await res.json();
+        const reply = data.choices?.[0]?.message?.content || "پاسخی دریافت نشد.";
+        addMessageTyping(reply, 'assistant');
+
+        // ذخیره پیام دستیار در MongoDB
+        fetch("/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sender: "assistant", content: reply })
+        });
+
+        memory.push({ role: "assistant", content: reply });
+        if (memory.length > memoryLimit * 2) memory.splice(0, 2);
+        saveMemory();
+      } catch (err) {
+        addMessage("خطا در ارتباط با OpenAI", 'assistant');
+      }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    inputMessage.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    inputMessage.addEventListener('input', () => {
+      inputMessage.style.height = 'auto';
+      inputMessage.style.height = (inputMessage.scrollHeight) + 'px';
+    });
+
+    document.getElementById('clearHistoryBtn').onclick = () => {
+      memory = [];
+      localStorage.setItem("publicMemory", JSON.stringify([]));
+      chat.innerHTML = "";
+    };
+
+    chat.innerHTML = "";
+    memory.forEach(m => addMessage(m.content, m.role));
+  </script>
+</body>
+</html>
