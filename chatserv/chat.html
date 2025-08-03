@@ -2,11 +2,11 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>چت با روان‌شناس</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root { --app-height: 100vh; } /* ارتفاع داینامیک */
+    :root { --app-height: 100dvh; }
     body {
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(to bottom right, #e0f2fe, #bae6fd);
@@ -15,8 +15,31 @@
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
+    header {
+      background: linear-gradient(to right, #0284c7, #0369a1);
+      color: white;
+      padding: 16px 20px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      flex-shrink: 0;
+    }
+    #clearHistoryBtn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #clearHistoryBtn:hover { background: rgba(255,255,255,0.35); }
+
     #chat {
       flex: 1;
       overflow-y: auto;
@@ -32,39 +55,23 @@
     .msg {
       padding: 14px 18px;
       border-radius: 22px;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       line-height: 1.6;
       white-space: pre-wrap;
       word-break: break-word;
       box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
-      user-select: text;
       max-width: 100%;
     }
-    .msg.user { background-color: #0ea5e9; color: white; border-bottom-left-radius: 4px; }
-    .msg.assistant { background-color: #f1f5f9; color: #111827; border-bottom-right-radius: 4px; }
-    header {
-      background: linear-gradient(to right, #0284c7, #0369a1);
+    .msg.user {
+      background-color: #0ea5e9;
       color: white;
-      padding: 16px 20px;
-      font-weight: 700;
-      font-size: 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-      flex-shrink: 0;
+      border-bottom-left-radius: 4px;
     }
-    #clearHistoryBtn {
-      background: rgba(255 255 255 / 0.2);
-      border: none;
-      color: white;
-      padding: 8px 14px;
-      border-radius: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+    .msg.assistant {
+      background-color: #f1f5f9;
+      color: #111827;
+      border-bottom-right-radius: 4px;
     }
-    #clearHistoryBtn:hover { background: rgba(255 255 255 / 0.35); }
     footer {
       padding: 10px 16px;
       background: white;
@@ -73,23 +80,25 @@
       gap: 12px;
       align-items: flex-end;
       flex-shrink: 0;
-      margin-top: auto;
-      padding-bottom: calc(env(safe-area-inset-bottom) + 8px);
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
     }
     textarea#inputMessage {
       flex-grow: 1;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       border-radius: 22px;
       border: 1px solid #cbd5e1;
       padding: 14px 18px;
       resize: none;
       max-height: 140px;
       line-height: 1.5;
-      font-family: 'Vazirmatn', sans-serif;
-      outline-offset: 2px;
-      min-height: 44px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+      transition: 0.2s;
     }
-    textarea#inputMessage:focus { border-color: #0ea5e9; box-shadow: 0 0 5px #0ea5e9aa; outline: none; }
+    textarea#inputMessage:focus {
+      border-color: #0ea5e9;
+      box-shadow: 0 0 6px #0ea5e955;
+      outline: none;
+    }
     #sendBtn {
       background-color: #0ea5e9;
       border: none;
@@ -97,13 +106,10 @@
       padding: 14px 22px;
       border-radius: 22px;
       font-weight: 700;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      user-select: none;
       transition: background-color 0.3s ease;
-      flex-shrink: 0;
       min-width: 90px;
-      text-align: center;
     }
     #sendBtn:hover { background-color: #0284c7; }
   </style>
@@ -111,24 +117,17 @@
 <body>
   <header>
     <div>کلینیک آرامش</div>
-    <button id="clearHistoryBtn" aria-label="پاک کردن تاریخچه">پاک کردن</button>
+    <button id="clearHistoryBtn">پاک کردن</button>
   </header>
 
-  <div id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <div id="chat"></div>
 
   <footer>
-    <textarea id="inputMessage" rows="1" placeholder="پیام خود را بنویسید..." aria-label="پیام"></textarea>
-    <button id="sendBtn" aria-label="ارسال پیام">ارسال</button>
+    <textarea id="inputMessage" rows="1" placeholder="پیام خود را بنویسید..."></textarea>
+    <button id="sendBtn">ارسال</button>
   </footer>
 
   <script>
-    // ست کردن ارتفاع واقعی (مخصوص موبایل)
-    function setAppHeight() {
-      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
-    }
-    window.addEventListener('resize', setAppHeight);
-    window.addEventListener('load', setAppHeight);
-
     const memoryLimit = 10;
     let memory = JSON.parse(localStorage.getItem("publicMemory")) || [];
     let autoScroll = true;
@@ -139,6 +138,7 @@
     chat.addEventListener('scroll', () => {
       autoScroll = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 50;
     });
+
     function scrollToBottom() { chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' }); }
 
     function addMessage(text, sender) {
@@ -164,7 +164,8 @@
       if (autoScroll) scrollToBottom();
       let i = 0;
       const interval = setInterval(() => {
-        if (i < text.length) { span.textContent += text[i++]; if (autoScroll) scrollToBottom(); } else clearInterval(interval);
+        if (i < text.length) { span.textContent += text[i]; i++; if (autoScroll) scrollToBottom(); }
+        else clearInterval(interval);
       }, 30);
     }
 
@@ -172,25 +173,28 @@
 
     function buildPrompt(newMessage) {
       const historyText = memory.map(h => `${h.role === 'user' ? 'کاربر' : 'دستیار'}: ${h.content}`).join("\n");
-      return [{ role: "system", content: `تو یک دستیار گفتگوی آنلاین هستی که نقش یک روانشناس غربالگر اولیه را ایفا می‌کنی.\n${historyText}` }];
+      return [{
+        role: "system",
+        content: `
+تو یک دستیار گفتگوی آنلاین هستی که نقش یک روانشناس غربالگر اولیه را ایفا می‌کنی.  
+هدفت این است که با چند پرسش کوتاه، دقیق و هدفمند (حداکثر ۱۰ سؤال) بفهمی آیا کاربر نیاز دارد با یک روانشناس یا مشاور حرفه‌ای صحبت کند یا خیر.
+${historyText}
+        `
+      }];
     }
 
     async function sendMessage() {
       const message = inputMessage.value.trim();
       if (!message) return;
       addMessage(message, 'user');
-      inputMessage.value = '';
-      inputMessage.style.height = 'auto';
+      inputMessage.value = ''; inputMessage.style.height = 'auto';
       memory.push({ role: "user", content: message });
       if (memory.length > memoryLimit * 2) memory.splice(0, 2);
       saveMemory();
+
       try {
         const messages = buildPrompt(message);
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages })
-        });
+        const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages }) });
         const data = await res.json();
         const reply = data.choices?.[0]?.message?.content || "پاسخی دریافت نشد.";
         addMessageTyping(reply, 'assistant');
@@ -205,11 +209,7 @@
     inputMessage.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
     inputMessage.addEventListener('input', () => { inputMessage.style.height = 'auto'; inputMessage.style.height = (inputMessage.scrollHeight) + 'px'; });
     document.getElementById('clearHistoryBtn').onclick = () => { memory = []; localStorage.setItem("publicMemory", JSON.stringify([])); chat.innerHTML = ""; };
-    memory.forEach(m => addMessage(m.content, m.role));
-    chat.scrollTop = chat.scrollHeight;
-
-    // وقتی کیبورد باز میشه → اسکرول پایین
-    inputMessage.addEventListener("focus", () => { setTimeout(scrollToBottom, 300); });
+    memory.forEach(m => addMessage(m.content, m.role)); chat.scrollTop = chat.scrollHeight;
   </script>
 </body>
 </html>
