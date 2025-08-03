@@ -78,7 +78,7 @@
     window.addEventListener('resize', setAppHeight);
     setAppHeight();
 
-    const memoryLimit = 10;
+    const memoryLimit = 100;
     let memory = JSON.parse(localStorage.getItem("publicMemory")) || [];
     let autoScroll = true;
 
@@ -274,6 +274,7 @@ ${historyText}
   </script>
 </body>
 </html>
+
 
 
 
