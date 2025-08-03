@@ -160,18 +160,34 @@
     }
 
     sendBtn.addEventListener('click', sendMessage);
-    inputMessage.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.shiftKey) { 
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-    inputMessage.addEventListener('input', () => { 
-      inputMessage.style.height = 'auto'; 
-      inputMessage.style.height = (inputMessage.scrollHeight) + 'px'; 
-    });
+inputMessage.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (e.shiftKey) {
+      // Shift + Enter → خط جدید، کاری نکن
+      return;
+    }
+    // بدون Shift: در دسکتاپ ارسال پیام، در موبایل جلوگیری از ارسال و خط جدید
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      // موبایل: فقط خط جدید بدون ارسال پیام
+      e.preventDefault();
+      // درج خط جدید در textarea
+      const start = inputMessage.selectionStart;
+      const end = inputMessage.selectionEnd;
+      inputMessage.value = inputMessage.value.substring(0, start) + "\n" + inputMessage.value.substring(end);
+      inputMessage.selectionStart = inputMessage.selectionEnd = start + 1;
+      inputMessage.style.height = 'auto';
+      inputMessage.style.height = inputMessage.scrollHeight + 'px';
+    } else {
+      // دسکتاپ: ارسال پیام
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+});
+
     document.getElementById('clearHistoryBtn').onclick = () => { memory = []; localStorage.setItem("publicMemory", JSON.stringify([])); chat.innerHTML = ""; };
     memory.forEach(m => addMessage(m.content, m.role)); scrollToBottom();
   </script>
 </body>
 </html>
+
