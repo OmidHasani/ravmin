@@ -6,6 +6,7 @@
   <title>چت با روان‌شناس</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    
     :root { --app-height: 100dvh; }
     body {
       font-family: 'Vazirmatn', sans-serif;
@@ -16,6 +17,16 @@
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
     }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    
+    body > div {
+      margin-top: 0 !important;
+    }
+
     .msg {
       animation: fadeIn .4s ease;
       display: inline-block;
@@ -263,6 +274,7 @@ ${historyText}
   </script>
 </body>
 </html>
+
 
 
 
