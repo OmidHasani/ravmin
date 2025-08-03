@@ -6,22 +6,16 @@
   <title>چت با روان‌شناس</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root {
-      --app-height: 100vh;
-    }
-    body, html {
-      margin: 0; padding: 0;
-      height: var(--app-height);
-      min-height: var(--app-height);
+    :root { --app-height: 100vh; } /* ارتفاع داینامیک */
+    body {
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(to bottom right, #e0f2fe, #bae6fd);
+      margin: 0;
+      height: var(--app-height);
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      padding-bottom: env(safe-area-inset-bottom);
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
     }
     #chat {
       flex: 1;
@@ -31,7 +25,6 @@
       flex-direction: column;
       gap: 0.8rem;
       scroll-behavior: smooth;
-      margin-bottom: 0;
     }
     .msg-wrapper { display: flex; max-width: 85%; }
     .msg-user { justify-content: flex-start; }
@@ -80,8 +73,8 @@
       gap: 12px;
       align-items: flex-end;
       flex-shrink: 0;
-      margin-top: auto; /* مهم: فوتر همیشه بچسبه پایین */
-      padding-bottom: calc(env(safe-area-inset-bottom) + 10px);
+      margin-top: auto;
+      padding-bottom: calc(env(safe-area-inset-bottom) + 8px);
     }
     textarea#inputMessage {
       flex-grow: 1;
@@ -96,11 +89,7 @@
       outline-offset: 2px;
       min-height: 44px;
     }
-    textarea#inputMessage:focus {
-      border-color: #0ea5e9;
-      box-shadow: 0 0 5px #0ea5e9aa;
-      outline: none;
-    }
+    textarea#inputMessage:focus { border-color: #0ea5e9; box-shadow: 0 0 5px #0ea5e9aa; outline: none; }
     #sendBtn {
       background-color: #0ea5e9;
       border: none;
@@ -133,7 +122,7 @@
   </footer>
 
   <script>
-    // تنظیم ارتفاع واقعی برای موبایل
+    // ست کردن ارتفاع واقعی (مخصوص موبایل)
     function setAppHeight() {
       document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
     }
@@ -143,7 +132,6 @@
     const memoryLimit = 10;
     let memory = JSON.parse(localStorage.getItem("publicMemory")) || [];
     let autoScroll = true;
-
     const chat = document.getElementById('chat');
     const inputMessage = document.getElementById('inputMessage');
     const sendBtn = document.getElementById('sendBtn');
@@ -151,12 +139,7 @@
     chat.addEventListener('scroll', () => {
       autoScroll = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 50;
     });
-
-    function scrollToBottom() {
-      requestAnimationFrame(() => {
-        chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' });
-      });
-    }
+    function scrollToBottom() { chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' }); }
 
     function addMessage(text, sender) {
       const wrapper = document.createElement('div');
@@ -181,11 +164,7 @@
       if (autoScroll) scrollToBottom();
       let i = 0;
       const interval = setInterval(() => {
-        if (i < text.length) {
-          span.textContent += text[i];
-          i++;
-          if (autoScroll) scrollToBottom();
-        } else clearInterval(interval);
+        if (i < text.length) { span.textContent += text[i++]; if (autoScroll) scrollToBottom(); } else clearInterval(interval);
       }, 30);
     }
 
@@ -193,14 +172,7 @@
 
     function buildPrompt(newMessage) {
       const historyText = memory.map(h => `${h.role === 'user' ? 'کاربر' : 'دستیار'}: ${h.content}`).join("\n");
-      return [{
-        role: "system",
-        content: `
-تو یک دستیار گفتگوی آنلاین هستی که نقش یک روانشناس غربالگر اولیه را ایفا می‌کنی.  
-هدفت این است که با چند پرسش کوتاه، دقیق و هدفمند (حداکثر ۱۰ سؤال) بفهمی آیا کاربر نیاز دارد با یک روانشناس یا مشاور حرفه‌ای صحبت کند یا خیر.
-${historyText}
-        `
-      }];
+      return [{ role: "system", content: `تو یک دستیار گفتگوی آنلاین هستی که نقش یک روانشناس غربالگر اولیه را ایفا می‌کنی.\n${historyText}` }];
     }
 
     async function sendMessage() {
@@ -226,34 +198,18 @@ ${historyText}
         memory.push({ role: "assistant", content: reply });
         if (memory.length > memoryLimit * 2) memory.splice(0, 2);
         saveMemory();
-      } catch (err) {
-        addMessage("خطا در ارتباط با سرور", 'assistant');
-      }
+      } catch { addMessage("خطا در ارتباط با سرور", 'assistant'); }
     }
 
     sendBtn.addEventListener('click', sendMessage);
-    inputMessage.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-    });
-    inputMessage.addEventListener('input', () => {
-      inputMessage.style.height = 'auto';
-      inputMessage.style.height = (inputMessage.scrollHeight) + 'px';
-    });
-
-    document.getElementById('clearHistoryBtn').onclick = () => {
-      memory = []; localStorage.setItem("publicMemory", JSON.stringify([])); chat.innerHTML = "";
-    };
-
+    inputMessage.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+    inputMessage.addEventListener('input', () => { inputMessage.style.height = 'auto'; inputMessage.style.height = (inputMessage.scrollHeight) + 'px'; });
+    document.getElementById('clearHistoryBtn').onclick = () => { memory = []; localStorage.setItem("publicMemory", JSON.stringify([])); chat.innerHTML = ""; };
     memory.forEach(m => addMessage(m.content, m.role));
-    inputMessage.style.height = 'auto';
-    inputMessage.style.height = inputMessage.scrollHeight + 'px';
     chat.scrollTop = chat.scrollHeight;
 
-    window.addEventListener('load', () => {
-      inputMessage.style.height = 'auto';
-      inputMessage.style.height = inputMessage.scrollHeight + 'px';
-      chat.scrollTop = chat.scrollHeight;
-    });
+    // وقتی کیبورد باز میشه → اسکرول پایین
+    inputMessage.addEventListener("focus", () => { setTimeout(scrollToBottom, 300); });
   </script>
 </body>
 </html>
