@@ -79,26 +79,37 @@
     });
     function scrollToBottom() { chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' }); }
 
-    function addMessage(text, sender) {
-      const wrapper = document.createElement('div');
-      wrapper.classList.add('flex', 'w-full', 'mb-2');
-      const div = document.createElement('div');
-      div.setAttribute('dir', 'rtl');
-      div.style.textAlign = 'right';
-      div.classList.add('msg', 'p-4', 'rounded-2xl', 'leading-relaxed', 'text-[1rem]');
+function addMessage(text, sender) {
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('flex', 'w-full', 'mb-2');
 
-      if (sender === 'user') {
-        wrapper.classList.add('justify-start');
-        div.classList.add('bg-teal-500', 'text-white', 'shadow-md', 'max-w-[90%]');
-      } else {
-        wrapper.classList.add('justify-end');
-        div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900', 'min-w-[90%]', 'max-w-[90%]');
-      }
-      div.textContent = text;
-      wrapper.appendChild(div);
-      chat.appendChild(wrapper);
-      if (autoScroll) scrollToBottom();
-    }
+  const div = document.createElement('div');
+  div.setAttribute('dir', 'rtl');
+  div.style.textAlign = 'right';
+  div.classList.add('msg', 'p-4', 'rounded-2xl', 'leading-relaxed', 'text-[1rem]');
+
+  if (sender === 'user') {
+    wrapper.classList.add('justify-start');
+    div.classList.add('bg-teal-500', 'text-white', 'shadow-md', 'max-w-[80%]');
+  } else {
+    wrapper.classList.add('justify-end');
+    div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900', 'min-w-[80%]', 'max-w-[80%]');
+  }
+
+  // اینجا متن رو مثل حالت تایپ‌شده بخش‌بندی می‌کنیم
+  const paragraphs = text.split(/[\n\.]+/).filter(p => p.trim() !== "");
+  paragraphs.forEach(p => {
+    const pElement = document.createElement('p');
+    pElement.textContent = p;
+    pElement.style.marginBottom = "0.8em"; // فاصله بین پاراگراف‌ها
+    div.appendChild(pElement);
+  });
+
+  wrapper.appendChild(div);
+  chat.appendChild(wrapper);
+  if (autoScroll) chat.scrollTop = chat.scrollHeight;
+}
+
 
 function addMessageTyping(text, sender) {
   const wrapper = document.createElement('div');
@@ -239,6 +250,7 @@ ${historyText}
   </script>
 </body>
 </html>
+
 
 
 
