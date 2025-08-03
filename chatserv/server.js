@@ -67,7 +67,7 @@ app.post('/api/chat', async (req, res) => {
     if (!messages) return res.status(400).json({ error: 'پیام‌ها ارسال نشده' });
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4.1",
       messages,
       max_tokens: 500,
     });
@@ -82,3 +82,4 @@ app.post('/api/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`🚀 Server running on http://localhost:${port}`);
 });
+
