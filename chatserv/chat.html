@@ -100,35 +100,51 @@
       if (autoScroll) scrollToBottom();
     }
 
-    function addMessageTyping(text, sender) {
-      const wrapper = document.createElement('div');
-      wrapper.classList.add('flex', 'w-full', 'mb-3');
-      const div = document.createElement('div');
-      div.setAttribute('dir', 'rtl');
-      div.style.textAlign = 'right';
-      div.classList.add('msg', 'p-4', 'rounded-2xl', 'leading-relaxed', 'text-[1.05rem]');
+function addMessageTyping(text, sender) {
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('flex', 'w-full', 'mb-3');
 
-      if (sender === 'user') {
-        wrapper.classList.add('justify-start');
-        div.classList.add('bg-teal-500', 'text-white', 'shadow-md', 'max-w-[80%]');
-      } else {
-        wrapper.classList.add('justify-end');
-        div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900', 'min-w-[80%]', 'max-w-[80%]');
+  const div = document.createElement('div');
+  div.setAttribute('dir', 'rtl');
+  div.style.textAlign = 'right';
+  div.classList.add('msg', 'p-4', 'rounded-2xl', 'leading-relaxed', 'text-[1.05rem]');
+
+  if (sender === 'user') {
+    wrapper.classList.add('justify-start');
+    div.classList.add('bg-teal-500', 'text-white', 'shadow-md', 'max-w-[80%]');
+  } else {
+    wrapper.classList.add('justify-end');
+    div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900', 'min-w-[80%]', 'max-w-[80%]');
+  }
+
+  const span = document.createElement('span');
+  span.style.display = 'inline-block';
+  span.style.direction = 'rtl';
+  span.style.unicodeBidi = 'plaintext';
+  span.style.textAlign = 'right';
+  div.appendChild(span);
+
+  wrapper.appendChild(div);
+  chat.appendChild(wrapper);
+  scrollToBottom();
+
+  const paragraphs = text.split(/[\n\.]+/).filter(p => p.trim() !== "");
+  let i = 0, pIndex = 0;
+  const interval = setInterval(() => {
+    span.textContent += paragraphs[pIndex][i] || "";
+    i++;
+    if (autoScroll) scrollToBottom();
+
+    if (i >= paragraphs[pIndex].length) {
+      span.textContent += "\n\n"; // اضافه کردن فاصله بین پاراگراف‌ها
+      pIndex++;
+      i = 0;
+      if (pIndex >= paragraphs.length) {
+        clearInterval(interval);
       }
-
-      const span = document.createElement('span');
-      span.style.display = 'inline-block';
-      div.appendChild(span);
-      wrapper.appendChild(div);
-      chat.appendChild(wrapper);
-      scrollToBottom();
-
-      let i = 0;
-      const interval = setInterval(() => {
-        if (i < text.length) { span.textContent += text[i]; i++; if (autoScroll) scrollToBottom(); }
-        else clearInterval(interval);
-      }, 30);
     }
+  }, 30);
+}
 
     function saveMemory() { localStorage.setItem("publicMemory", JSON.stringify(memory)); }
 
@@ -223,4 +239,5 @@ ${historyText}
   </script>
 </body>
 </html>
+
 
