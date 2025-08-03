@@ -19,7 +19,6 @@
     .msg {
       animation: fadeIn .4s ease;
       display: inline-block;
-      max-width: 75%;
       white-space: pre-wrap;
       word-break: break-word;
     }
@@ -37,10 +36,7 @@
 </head>
 <body>
 
-  <!-- Container اصلی با ارتفاع داینامیک -->
   <div class="flex flex-col w-full max-w-3xl mx-auto h-[var(--app-height)] bg-white shadow-xl border border-blue-100">
-
-    <!-- هدر -->
     <header class="bg-gradient-to-r from-sky-400 to-blue-600 text-white flex justify-between items-center p-5 shadow flex-shrink-0">
       <div>
         <h1 class="text-xl font-bold">کلینیک آرامش</h1>
@@ -51,10 +47,8 @@
       </button>
     </header>
 
-    <!-- بخش چت -->
     <main id="chat" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-blue-50 to-sky-50"></main>
 
-    <!-- ورودی پایین صفحه (ثابت) -->
     <footer class="p-3 border-t border-gray-300 flex items-end flex-row-reverse space-x-2 bg-white flex-shrink-0">
       <textarea id="inputMessage" rows="1" placeholder="پیام خود را بنویسید..."
         class="flex-grow min-h-[44px] max-h-[150px] p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-gray-800 resize-none overflow-y-hidden transition-all duration-150"></textarea>
@@ -63,11 +57,9 @@
         ارسال
       </button>
     </footer>
-
   </div>
 
   <script>
-    // ارتفاع داینامیک مثل اپلیکیشن واقعی
     function setAppHeight() {
       document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
     }
@@ -93,13 +85,14 @@
       const div = document.createElement('div');
       div.setAttribute('dir', 'rtl');
       div.style.textAlign = 'right';
-      div.classList.add('msg', 'p-4', 'rounded-2xl', 'max-w-[80%]', 'leading-relaxed', 'text-[1rem]');
+      div.classList.add('msg', 'p-4', 'rounded-2xl', 'leading-relaxed', 'text-[1rem]');
+
       if (sender === 'user') {
         wrapper.classList.add('justify-start');
-        div.classList.add('bg-teal-500', 'text-white', 'shadow-md');
+        div.classList.add('bg-teal-500', 'text-white', 'shadow-md', 'max-w-[80%]');
       } else {
         wrapper.classList.add('justify-end');
-        div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900');
+        div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900', 'min-w-[80%]', 'max-w-[80%]');
       }
       div.textContent = text;
       wrapper.appendChild(div);
@@ -113,20 +106,23 @@
       const div = document.createElement('div');
       div.setAttribute('dir', 'rtl');
       div.style.textAlign = 'right';
-      div.classList.add('msg', 'p-4', 'rounded-2xl', 'max-w-[80%]', 'leading-relaxed', 'text-[1.05rem]');
+      div.classList.add('msg', 'p-4', 'rounded-2xl', 'leading-relaxed', 'text-[1.05rem]');
+
+      if (sender === 'user') {
+        wrapper.classList.add('justify-start');
+        div.classList.add('bg-teal-500', 'text-white', 'shadow-md', 'max-w-[80%]');
+      } else {
+        wrapper.classList.add('justify-end');
+        div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900', 'min-w-[80%]', 'max-w-[80%]');
+      }
+
       const span = document.createElement('span');
       span.style.display = 'inline-block';
       div.appendChild(span);
-      if (sender === 'user') {
-        wrapper.classList.add('justify-start');
-        div.classList.add('bg-teal-500', 'text-white', 'shadow-md');
-      } else {
-        wrapper.classList.add('justify-end');
-        div.classList.add('bg-gradient-to-r', 'from-sky-100', 'to-blue-50', 'shadow-lg', 'text-gray-900');
-      }
       wrapper.appendChild(div);
       chat.appendChild(wrapper);
       scrollToBottom();
+
       let i = 0;
       const interval = setInterval(() => {
         if (i < text.length) { span.textContent += text[i]; i++; if (autoScroll) scrollToBottom(); }
@@ -164,8 +160,16 @@
     }
 
     sendBtn.addEventListener('click', sendMessage);
-    inputMessage.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
-    inputMessage.addEventListener('input', () => { inputMessage.style.height = 'auto'; inputMessage.style.height = (inputMessage.scrollHeight) + 'px'; });
+    inputMessage.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { 
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+    inputMessage.addEventListener('input', () => { 
+      inputMessage.style.height = 'auto'; 
+      inputMessage.style.height = (inputMessage.scrollHeight) + 'px'; 
+    });
     document.getElementById('clearHistoryBtn').onclick = () => { memory = []; localStorage.setItem("publicMemory", JSON.stringify([])); chat.innerHTML = ""; };
     memory.forEach(m => addMessage(m.content, m.role)); scrollToBottom();
   </script>
