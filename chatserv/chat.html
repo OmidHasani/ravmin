@@ -142,7 +142,8 @@
       if (!message) return;
       addMessage(message, 'user');
       fetch("/messages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sender: "user", content: message }) });
-      inputMessage.value = ''; inputMessage.style.height = 'auto';
+      inputMessage.value = ''; 
+      adjustTextareaHeight(inputMessage);
       memory.push({ role: "user", content: message });
       if (memory.length > memoryLimit * 2) memory.splice(0, 2);
       saveMemory();
@@ -159,35 +160,50 @@
       } catch { addMessage("خطا در ارتباط با سرور", 'assistant'); }
     }
 
-    sendBtn.addEventListener('click', sendMessage);
-inputMessage.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    if (e.shiftKey) {
-      // Shift + Enter → خط جدید، کاری نکن
-      return;
+    // تنظیم ارتفاع تکست‌ایریا
+    function adjustTextareaHeight(el) {
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
     }
-    // بدون Shift: در دسکتاپ ارسال پیام، در موبایل جلوگیری از ارسال و خط جدید
-    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-      // موبایل: فقط خط جدید بدون ارسال پیام
-      e.preventDefault();
-      // درج خط جدید در textarea
-      const start = inputMessage.selectionStart;
-      const end = inputMessage.selectionEnd;
-      inputMessage.value = inputMessage.value.substring(0, start) + "\n" + inputMessage.value.substring(end);
-      inputMessage.selectionStart = inputMessage.selectionEnd = start + 1;
-      inputMessage.style.height = 'auto';
-      inputMessage.style.height = inputMessage.scrollHeight + 'px';
-    } else {
-      // دسکتاپ: ارسال پیام
-      e.preventDefault();
-      sendMessage();
-    }
-  }
-});
 
-    document.getElementById('clearHistoryBtn').onclick = () => { memory = []; localStorage.setItem("publicMemory", JSON.stringify([])); chat.innerHTML = ""; };
-    memory.forEach(m => addMessage(m.content, m.role)); scrollToBottom();
+    sendBtn.addEventListener('click', sendMessage);
+
+    inputMessage.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        if (e.shiftKey) {
+          // Shift + Enter → خط جدید، کاری نکن
+          return;
+        }
+        // بدون Shift: در دسکتاپ ارسال پیام، در موبایل جلوگیری از ارسال و خط جدید
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          // موبایل: فقط خط جدید بدون ارسال پیام
+          e.preventDefault();
+          // درج خط جدید در textarea
+          const start = inputMessage.selectionStart;
+          const end = inputMessage.selectionEnd;
+          inputMessage.value = inputMessage.value.substring(0, start) + "\n" + inputMessage.value.substring(end);
+          inputMessage.selectionStart = inputMessage.selectionEnd = start + 1;
+          adjustTextareaHeight(inputMessage);
+        } else {
+          // دسکتاپ: ارسال پیام
+          e.preventDefault();
+          sendMessage();
+        }
+      }
+    });
+
+    // تنظیم ارتفاع در هنگام تایپ و حذف خط
+    inputMessage.addEventListener('input', () => adjustTextareaHeight(inputMessage));
+    inputMessage.addEventListener('keyup', () => adjustTextareaHeight(inputMessage));
+
+    document.getElementById('clearHistoryBtn').onclick = () => {
+      memory = [];
+      localStorage.setItem("publicMemory", JSON.stringify([]));
+      chat.innerHTML = "";
+    };
+
+    memory.forEach(m => addMessage(m.content, m.role));
+    scrollToBottom();
   </script>
 </body>
 </html>
-
