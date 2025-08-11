@@ -43,21 +43,6 @@
       max-height: 150px;
       transition: height 0.2s ease;
     }
-    
-    /* استایل برای debug console */
-    #debugConsole {
-      background: #1a1a1a;
-      color: #00ff00;
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      padding: 10px;
-      max-height: 300px;
-      overflow-y: auto;
-      border-top: 2px solid #333;
-      white-space: pre-wrap;
-      direction: ltr;
-      text-align: left;
-    }
   </style>
 </head>
 <body>
@@ -69,20 +54,12 @@
         <h1 class="text-xl font-bold">کلینیک روانشناسی </h1>
         <p class="text-sm text-blue-100">مشاوره قبل از درمان </p>
       </div>
-      <div class="flex gap-2">
-        <button id="toggleDebugBtn" class="bg-red-600/80 hover:bg-red-700/90 px-3 py-1 rounded-xl text-sm shadow">
-          نمایش Debug
-        </button>
-        <button id="clearHistoryBtn" class="bg-gray-800/80 hover:bg-gray-900/90 px-3 py-1 rounded-xl text-sm shadow">
-          پاک کردن تاریخچه
-        </button>
-      </div>
+      <button id="clearHistoryBtn" class="bg-gray-800/80 hover:bg-gray-900/90 px-3 py-1 rounded-xl text-sm shadow">
+        پاک کردن تاریخچه
+      </button>
     </header>
 
     <main id="chat" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-blue-50 to-sky-50"></main>
-
-    <!-- Debug Console -->
-    <div id="debugConsole" class="hidden flex-shrink-0"></div>
 
     <footer class="p-3 border-t border-gray-300 flex items-end flex-row-reverse space-x-2 bg-white flex-shrink-0">
       <textarea id="inputMessage" rows="1" placeholder="پیام خود را بنویسید..."
@@ -108,28 +85,6 @@
     const chat = document.getElementById('chat');
     const inputMessage = document.getElementById('inputMessage');
     const sendBtn = document.getElementById('sendBtn');
-    const debugConsole = document.getElementById('debugConsole');
-    const toggleDebugBtn = document.getElementById('toggleDebugBtn');
-
-    // Toggle Debug Console
-    toggleDebugBtn.addEventListener('click', () => {
-      if (debugConsole.classList.contains('hidden')) {
-        debugConsole.classList.remove('hidden');
-        toggleDebugBtn.textContent = 'مخفی کردن Debug';
-        toggleDebugBtn.className = 'bg-green-600/80 hover:bg-green-700/90 px-3 py-1 rounded-xl text-sm shadow';
-      } else {
-        debugConsole.classList.add('hidden');
-        toggleDebugBtn.textContent = 'نمایش Debug';
-        toggleDebugBtn.className = 'bg-red-600/80 hover:bg-red-700/90 px-3 py-1 rounded-xl text-sm shadow';
-      }
-    });
-
-    // Debug logging function
-    function debugLog(title, data) {
-      const timestamp = new Date().toLocaleTimeString();
-      debugConsole.textContent += `[${timestamp}] ${title}:\n${JSON.stringify(data, null, 2)}\n\n`;
-      debugConsole.scrollTop = debugConsole.scrollHeight;
-    }
 
     chat.addEventListener('scroll', () => {
       autoScroll = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 50;
@@ -249,46 +204,35 @@ ${historyText}
 متون بالا تاریخچه مکالمه شما و کاربر هستند و فقط در صورت نیاز برای پاسخ به پیام فعلی به آنها رجوع کن. ` }];
     }
 
-    async function sendMessage() {
-      const message = inputMessage.value.trim();
-      if (!message) return;
-      addMessage(message, 'user');
-      fetch("/messages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sender: "user", content: message }) });
-      inputMessage.value = ''; 
-      adjustTextareaHeight(inputMessage);
-      memory.push({ role: "user", content: message });
-      if (memory.length > memoryLimit * 2) memory.splice(0, 2);
-      saveMemory();
-      try {
-        const messages = buildPrompt(message);
-        
-        // Debug: نمایش پیام ارسالی به OpenAI
-        debugLog("SENDING TO OPENAI API", { messages });
-        console.log("🚀 SENDING TO OPENAI:", messages);
-        
-        const requestBody = { messages };
-        debugLog("REQUEST BODY", requestBody);
-        console.log("📤 REQUEST BODY:", requestBody);
-        
-        const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(requestBody) });
-        const data = await res.json();
-        
-        // Debug: نمایش پاسخ از OpenAI
-        debugLog("RESPONSE FROM OPENAI", data);
-        console.log("📥 RESPONSE FROM OPENAI:", data);
-        
-        const reply = data.choices?.[0]?.message?.content || "پاسخی دریافت نشد.";
-        addMessageTyping(reply, 'assistant');
-        fetch("/messages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sender: "assistant", content: reply }) });
-        memory.push({ role: "assistant", content: reply });
-        if (memory.length > memoryLimit * 2) memory.splice(0, 2);
-        saveMemory();
-      } catch (error) { 
-        debugLog("ERROR", error);
-        console.error("❌ ERROR:", error);
-        addMessage("خطا در ارتباط با سرور", 'assistant'); 
-      }
-    }
+async function sendMessage() {
+  const message = inputMessage.value.trim();
+  if (!message) return;
+  addMessage(message, 'user');
+  fetch("/messages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sender: "user", content: message }) });
+  inputMessage.value = ''; 
+  adjustTextareaHeight(inputMessage);
+  memory.push({ role: "user", content: message });
+  if (memory.length > memoryLimit * 2) memory.splice(0, 2);
+  saveMemory();
+  try {
+    const messages = buildPrompt(message);
+    
+    // اینجا پیام رو در کنسول چاپ میکنیم
+    console.log("Message sent to OpenAI:", messages);
+
+    const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages }) });
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content || "پاسخی دریافت نشد.";
+    addMessageTyping(reply, 'assistant');
+    fetch("/messages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sender: "assistant", content: reply }) });
+    memory.push({ role: "assistant", content: reply });
+    if (memory.length > memoryLimit * 2) memory.splice(0, 2);
+    saveMemory();
+  } catch {
+    addMessage("خطا در ارتباط با سرور", 'assistant');
+  }
+}
+
 
     // تنظیم ارتفاع تکست‌ایریا
     function adjustTextareaHeight(el) {
@@ -330,7 +274,6 @@ ${historyText}
       memory = [];
       localStorage.setItem("publicMemory", JSON.stringify([]));
       chat.innerHTML = "";
-      debugConsole.textContent = "";
     };
 
     memory.forEach(m => addMessage(m.content, m.role));
@@ -338,3 +281,4 @@ ${historyText}
   </script>
 </body>
 </html>
+
