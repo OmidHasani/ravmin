@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بلمو - پلتفرم هوش مصنوعی در روانشناسی</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,0 1000,1000"/></svg>');
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: white;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Product Section */
+        .product {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .product-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .product-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-text p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .product-features {
+            list-style: none;
+        }
+
+        .product-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .product-features i {
+            color: #4ade80;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-demo {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-header {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: rgba(255, 255, 255, 0.2);
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .bot-message {
+            background: rgba(102, 126, 234, 0.3);
+            margin-right: auto;
+        }
+
+        /* Video Upload Section */
+        .video-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .upload-area {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.05) 10px,
+                rgba(255, 255, 255, 0.05) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .upload-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .upload-area h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .about-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brain-visual {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: white;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: #667eea;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #bdc3c7;
+            text-decoration: none;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #667eea;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .product-content,
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <header>
+        <nav class="container">
+            <div class="logo">بلمو</div>
+            <ul class="nav-links">
+                <li><a href="#home">خانه</a></li>
+                <li><a href="#features">ویژگی‌ها</a></li>
+                <li><a href="#product">محصول</a></li>
+                <li><a href="#video">ویدیو</a></li>
+                <li><a href="#about">درباره ما</a></li>
+                <li><a href="#contact">تماس</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>بلمو - آینده روانشناسی</h1>
+                    <p>اولین پلتفرم هوش مصنوعی در ایران برای خدمات روانشناسی و مشاوره آنلاین. با چتبات پیشرفته پیش‌مشاوره، مسیر سلامت روان خود را آغاز کنید.</p>
+                    <a href="#product" class="cta-button">
+                        <i class="fas fa-rocket"></i>
+                        شروع کنید
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title fade-in">ویژگی‌های منحصربه‌فرد بلمو</h2>
+                <div class="features-grid">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>هوش مصنوعی پیشرفته</h3>
+                        <p>استفاده از آخرین تکنولوژی‌های AI برای تحلیل دقیق و ارائه بهترین راهکارهای روانشناختی</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>چتبات پیش‌مشاوره</h3>
+                        <p>گفتگوی هوشمند و تعاملی برای شناسایی اولیه نیازها و راهنمایی به سمت مناسب‌ترین خدمات</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>حفظ حریم خصوصی</h3>
+                        <p>امنیت کامل اطلاعات شخصی و رعایت اصول اخلاقی روانشناسی در تمام مراحل</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>دسترسی ۲۴/۷</h3>
+                        <p>خدمات شبانه‌روزی بدون محدودیت زمانی برای پاسخگویی به نیازهای فوری</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3>متخصصان مجرب</h3>
+                        <p>همکاری با روانشناسان و مشاوران حرفه‌ای برای ارائه بهترین کیفیت خدمات</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>پیگیری پیشرفت</h3>
+                        <p>سیستم جامع ردیابی و گزارش‌گیری برای نظارت بر روند بهبودی و پیشرفت</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="product" class="product">
+            <div class="container">
+                <div class="product-content">
+                    <div class="product-text fade-in">
+                        <h2>چتبات پیش‌مشاوره بلمو</h2>
+                        <p>اولین و پیشرفته‌ترین سیستم پیش‌مشاوره مبتنی بر هوش مصنوعی در ایران. این چتبات هوشمند قادر است در گفتگویی صمیمی و حرفه‌ای، نیازهای روانشناختی شما را شناسایی کرده و بهترین مسیر درمانی را پیشنهاد دهد.</p>
+                        
+                        <ul class="product-features">
+                            <li><i class="fas fa-check-circle"></i> تحلیل هوشمند احساسات و روحیات</li>
+                            <li><i class="fas fa-check-circle"></i> ارزیابی سطح استرس و اضطراب</li>
+                            <li><i class="fas fa-check-circle"></i> شناسایی علائم افسردگی</li>
+                            <li><i class="fas fa-check-circle"></i> راهنمایی برای انتخاب نوع مشاوره</li>
+                            <li><i class="fas fa-check-circle"></i> ارجاع به متخصص مناسب</li>
+                        </ul>
+                    </div>
+                    <div class="chatbot-demo fade-in">
+                        <div class="chat-header">
+                            <i class="fas fa-robot"></i>
+                            چتبات پیش‌مشاوره بلمو
+                        </div>
+                        <div class="chat-messages">
+                            <div class="message bot-message">
+                                سلام! من دستیار هوشمند بلمو هستم. چطور می‌تونم کمکتون کنم؟
+                            </div>
+                            <div class="message user-message">
+                                سلام، اخیراً احساس استرس زیادی دارم
+                            </div>
+                            <div class="message bot-message">
+                                متوجه شدم. استرس می‌تونه تأثیر زیادی روی زندگی داشته باشه. می‌تونید بیشتر توضیح بدید که این استرس از کجا نشأت می‌گیره؟
+                            </div>
+                            <div class="message user-message">
+                                بیشتر مربوط به کار و فشار کاری است
+                            </div>
+                            <div class="message bot-message">
+                                بر اساس صحبت‌هاتون، مشاوره مدیریت استرس شغلی می‌تونه خیلی مفید باشه. آیا مایلید با یکی از متخصصان ما وقت بگیرید؟
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="video" class="video-section">
+            <div class="container">
+                <h2 class="section-title fade-in">معرفی محصول</h2>
+                <div class="upload-area fade-in">
+                    <div class="upload-content">
+                        <div class="upload-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3>ویدیو معرفی محصول</h3>
+                        <p>برای مشاهده ویدیو معرفی کامل محصول چتبات پیش‌مشاوره بلمو، فایل ویدیو خود را آپلود کنید</p>
+                        <input type="file" id="videoFile" class="file-input" accept="video/*">
+                        <label for="videoFile" class="upload-btn">
+                            <i class="fas fa-upload"></i>
+                            آپلود ویدیو
+                        </label>
+                        <div id="videoPreview" style="margin-top: 2rem; display: none;">
+                            <video controls style="width: 100%; max-width: 600px; border-radius: 10px;">
+                                <source id="videoSource" src="" type="video/mp4">
+                                مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text fade-in">
+                        <h2>درباره بلمو</h2>
+                        <p>بلمو با هدف انقلاب در حوزه خدمات روانشناسی و بهره‌گیری از قدرت هوش مصنوعی برای ارائه خدمات بهتر و دسترسی‌پذیرتر تأسیس شده است.</p>
+                        <p>ما معتقدیم که سلامت روان حق همه افراد جامعه است و با استفاده از تکنولوژی‌های نوین می‌توانیم این خدمات را به شکلی مؤثرتر و در دسترس‌تر ارائه دهیم.</p>
+                        <p>تیم ما متشکل از روانشناسان مجرب، متخصصان هوش مصنوعی و توسعه‌دهندگان با تجربه است که با همکاری یکدیگر بهترین راه‌حل‌های دیجیتال را برای سلامت روان ارائه می‌دهند.</p>
+                        
+                        <div class="stats">
+                            <div class="stat">
+                                <span class="stat-number">1000+</span>
+                                <span class="stat-label">کاربر راضی</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">24/7</span>
+                                <span class="stat-label">پشتیبانی</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">95%</span>
+                                <span class="stat-label">دقت تشخیص</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">50+</span>
+                                <span class="stat-label">متخصص</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-visual fade-in">
+                        <div class="brain-visual">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>بلمو</h3>
+                    <p>پلتفرم پیشرو هوش مصنوعی در خدمات روانشناسی</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>خدمات</h3>
+                    <p><a href="#">چتبات پیش‌مشاوره</a></p>
+                    <p><a href="#">مشاوره آنلاین</a></p>
+                    <p><a href="#">تست‌های روانشناختی</a></p>
+                    <p><a href="#">پیگیری درمان</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>تماس با ما</h3>
+                    <p><i class="fas fa-phone"></i> ۰۲۱-۱۲۳۴۵۶۷۸</p>
+                    <p><i class="fas fa-envelope"></i> info@blemo.ir</p>
+                    <p><i class="fas fa-map-marker-alt"></i> تهران، ایران</p>
+                </div>
+                <div class="footer-section">
+                    <h3>لینک‌های مفید</h3>
+                    <p><a href="#">حریم خصوصی</a></p>
+                    <p><a href="#">شرایط استفاده</a></p>
+                    <p><a href="#">سؤالات متداول</a></p>
+                    <p><a href="#">پشتیبانی</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; ۲۰۲۴ بلمو. تمامی حقوق محفوظ است.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade In Animation on Scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Video Upload Functionality
+        document.getElementById('videoFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const videoPreview = document.getElementById('videoPreview');
+                const videoSource = document.getElementById('videoSource');
+                const url = URL.createObjectURL(file);
+                
+                videoSource.src = url;
+                videoPreview.style.display = 'block';
+                
+                // Add success message
+                const uploadContent = document.querySelector('.upload-content');
+                let successMsg = uploadContent.querySelector('.success-message');
+                if (!successMsg) {
+                    successMsg = document.createElement('div');
+                    successMsg.className = 'success-message';
+                    successMsg.style.cssText = 'margin-top: 1rem; padding: 1rem; background: rgba(76, 222, 128, 0.2); border-radius: 10px; color: white;';
+                    successMsg.innerHTML = '<i class="fas fa-check-circle"></i> ویدیو با موفقیت آپلود شد!';
+                    uploadContent.appendChild(successMsg);
+                }
+            }
+        });
+
+        // Header Background on Scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Animate Chat Messages
+        function animateChat() {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach((message, index) => {
+                message.style.opacity = '0';
+                message.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    message.style.transition = 'all 0.5s ease';
+                    message.style.opacity = '1';
+                    message.style.transform = 'translateY(0)';
+                }, index * 1000);
+            });
+        }
+
+        // Start chat animation when product section is visible
+        const productSection = document.getElementById('product');
+        const productObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateChat();
+                    productObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        productObserver.observe(productSection);
+
+        // Add some interactive elements
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = counter.textContent;
+                const numericTarget = parseInt(target.replace(/\D/g, ''));
+                if (numericTarget) {
+                    let current = 0;
+                    const increment = numericTarget / 50;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= numericTarget) {
+                            counter.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.floor(current) + (target.includes('%') ? '%' : '+');
+                        }
+                    }, 50);
+                }
+            });
+        }
+
+        // Animate counters when about section is visible
+        const aboutSection = document.getElementById('about');
+        const aboutObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    aboutObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        aboutObserver.observe(aboutSection);
+    </script>
+</body>
+</html>
