@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بلمو - پلتفرم هوش مصنوعی در روانشناسی</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>بلمو</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">خانه</a></li>
+                <li><a href="#about">درباره ما</a></li>
+                <li><a href="#product">محصولات</a></li>
+                <li><a href="#demo">دمو</a></li>
+                <li><a href="#contact">تماس</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">بلمو</span>
+                    <br>انقلابی در روانشناسی با هوش مصنوعی
+                </h1>
+                <p class="hero-description">
+                    اولین پلتفرم هوش مصنوعی تخصصی در حوزه روانشناسی که با ارائه خدمات پیش‌مشاوره، 
+                    مسیر سلامت روان را برای همه هموار می‌کند.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="scrollToSection('demo')">
+                        <i class="fas fa-play"></i>
+                        مشاهده دمو
+                    </button>
+                    <button class="btn btn-secondary" onclick="scrollToSection('product')">
+                        <i class="fas fa-info-circle"></i>
+                        اطلاعات بیشتر
+                    </button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-elements">
+                    <div class="floating-element" style="--delay: 0s">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="floating-element" style="--delay: 1s">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="floating-element" style="--delay: 2s">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="ai-avatar">
+                        <div class="avatar-circle">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div class="pulse-ring"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>درباره بلمو</h2>
+                <p>پیشگام در تلفیق هوش مصنوعی و روانشناسی</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>هوش مصنوعی پیشرفته</h3>
+                        <p>استفاده از آخرین تکنولوژی‌های هوش مصنوعی برای ارائه خدمات روانشناسی با کیفیت بالا</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>حریم خصوصی کامل</h3>
+                        <p>اطمینان از حفظ حریم خصوصی و امنیت اطلاعات کاربران با بالاترین استانداردها</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>تیم متخصص</h3>
+                        <p>همکاری با روانشناسان و متخصصان حوزه هوش مصنوعی برای ارائه بهترین خدمات</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Section -->
+    <section id="product" class="product">
+        <div class="container">
+            <div class="section-header">
+                <h2>محصولات ما</h2>
+                <p>پیش‌مشاوره هوشمند برای سلامت روان</p>
+            </div>
+            <div class="product-showcase">
+                <div class="product-info">
+                    <h3>پیش‌مشاوره بلمو</h3>
+                    <p class="product-description">
+                        چت‌بات هوشمند پیش‌مشاوره که با استفاده از الگوریتم‌های پیشرفته هوش مصنوعی، 
+                        به کاربران کمک می‌کند تا قبل از مراجعه به مشاور، شناخت بهتری از وضعیت خود پیدا کنند.
+                    </p>
+                    <div class="product-features">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>ارزیابی اولیه وضعیت روانی</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>پیشنهادات شخصی‌سازی شده</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>پشتیبانی ۲۴/۷</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>گزارش‌های تحلیلی</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="scrollToSection('demo')">
+                        <i class="fas fa-rocket"></i>
+                        شروع کنید
+                    </button>
+                </div>
+                <div class="product-visual">
+                    <div class="chat-interface">
+                        <div class="chat-header">
+                            <div class="chat-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="chat-info">
+                                <h4>بلمو مشاور</h4>
+                                <span class="status">آنلاین</span>
+                            </div>
+                        </div>
+                        <div class="chat-messages">
+                            <div class="message bot-message">
+                                <p>سلام! من بلمو هستم، مشاور هوشمند شما. چطور می‌تونم کمکتون کنم؟</p>
+                            </div>
+                            <div class="message user-message">
+                                <p>سلام، می‌خوام درباره اضطراب صحبت کنم</p>
+                            </div>
+                            <div class="message bot-message">
+                                <p>بله، حتماً. اضطراب موضوع مهمیه. می‌تونید بگید چه علائمی دارید؟</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo">
+        <div class="container">
+            <div class="section-header">
+                <h2>دمو محصول</h2>
+                <p>ویدیوی معرفی پیش‌مشاوره بلمو</p>
+            </div>
+            <div class="video-section">
+                <div class="video-container">
+                    <div class="video-placeholder" id="videoPlaceholder">
+                        <i class="fas fa-play-circle"></i>
+                        <p>برای مشاهده ویدیو کلیک کنید</p>
+                        <button class="btn btn-primary" onclick="uploadVideo()">
+                            <i class="fas fa-upload"></i>
+                            آپلود ویدیو
+                        </button>
+                    </div>
+                    <video id="demoVideo" controls style="display: none;">
+                        <source src="" type="video/mp4">
+                        مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                    </video>
+                </div>
+                <div class="video-info">
+                    <h3>پیش‌مشاوره بلمو در عمل</h3>
+                    <p>
+                        در این ویدیو می‌بینید که چگونه پیش‌مشاوره بلمو به کاربران کمک می‌کند 
+                        تا با استفاده از هوش مصنوعی، شناخت بهتری از وضعیت روانی خود پیدا کنند.
+                    </p>
+                    <div class="video-stats">
+                        <div class="stat">
+                            <i class="fas fa-users"></i>
+                            <span>۱۰۰۰+ کاربر فعال</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <span>پاسخ فوری</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-star"></i>
+                            <span>۴.۹/۵ امتیاز</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>تماس با ما</h2>
+                <p>آماده پاسخگویی به سوالات شما هستیم</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>ایمیل</h4>
+                            <p>info@blemo.ir</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>تلفن</h4>
+                            <p>۰۲۱-۱۲۳۴۵۶۷۸</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>آدرس</h4>
+                            <p>تهران، خیابان ولیعصر</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="نام و نام خانوادگی" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="ایمیل" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="پیام شما" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            ارسال پیام
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-brain"></i>
+                        <span>بلمو</span>
+                    </div>
+                    <p>پیشگام در تلفیق هوش مصنوعی و روانشناسی برای سلامت روان جامعه</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>محصولات</h4>
+                    <ul>
+                        <li><a href="#product">پیش‌مشاوره</a></li>
+                        <li><a href="#demo">دمو</a></li>
+                        <li><a href="#">قیمت‌گذاری</a></li>
+                        <li><a href="#">مقایسه</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>شرکت</h4>
+                    <ul>
+                        <li><a href="#about">درباره ما</a></li>
+                        <li><a href="#contact">تماس</a></li>
+                        <li><a href="#">فرصت‌های شغلی</a></li>
+                        <li><a href="#">اخبار</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>پشتیبانی</h4>
+                    <ul>
+                        <li><a href="#">راهنما</a></li>
+                        <li><a href="#">سوالات متداول</a></li>
+                        <li><a href="#">گزارش مشکل</a></li>
+                        <li><a href="#">حریم خصوصی</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; ۱۴۰۲ بلمو. تمامی حقوق محفوظ است.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
